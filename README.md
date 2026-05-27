@@ -23,18 +23,20 @@ repo; the file here is a published mirror.
 
 | File | Purpose |
 |---|---|
-| `public.pem` | Ed25519 signing public key. Customers fetch this to cross-check the `public.pem` shipped inside their bundle. |
+| `root.pem` | Aedify **root** public key — the long-lived trust anchor. Customers pin this (compare its fingerprint against the out-of-band Aedify customer-comms email) and the chain in each bundle walks up to it. This is the production ceremony-minted root. |
+| `public.pem` | Legacy single-key Ed25519 public key. **Development placeholder** — superseded by the root → product chain for chain-mode customers (e.g. NFCU). Do not rely on it. |
 | `CNAME` | GitHub Pages custom-domain binding (`keys.aedify.io`). |
 
-`root.pem` (the chain root from `docs/KEY_CEREMONY.md`) will be added
-here once the root key ceremony has run.
+Per-product signing keys + their root-signed certificates ship *inside*
+each customer bundle (`products/<slug>/{public.pem,certificate.json}` in
+the source repo); they are not published here.
 
 ## Status
 
-The current `public.pem` is a **development placeholder**. It will be
-replaced by the ceremony-minted production key when the root key
-ceremony executes. Until then, treat the published key as
-non-production.
+`root.pem` is the **production** root from the key ceremony
+(`docs/KEY_CEREMONY.md`). `public.pem` remains a **development
+placeholder** from before the chain model and is retained only for any
+legacy single-key consumer; chain-mode customers anchor on `root.pem`.
 
 See `docs/KEYS_URL_MIGRATION.md` in `aedify-llc/agentic_engineering` for
 the full migration plan and cutover checklist (#215 / #207-H).
